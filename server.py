@@ -1,10 +1,10 @@
 #!/usr/bin/python
 import sys
 import time
+import random
 import threading
 import traceback
 import signal
-import Adafruit_DHT
 import sys
 sys.path.insert(0, "libiec61850/pyiec61850")
 import iec61850
@@ -53,10 +53,11 @@ if __name__=="__main__":
     
     #Main loop
     while (running):
-		#Sensing humidity and temperature value using DHT11
-        humidity, temperature = Adafruit_DHT.read_retry(11, 4);
+		#Get current datetime with random integer
 		#Add the value to the specific Data Attribute
-        val1 = iec61850.IedServer_updateFloatAttributeValue(iedServer, fl, temperature);
+        random.seed()
+        message = current_time + str(random.randint(1, 10))
+        val1 = iec61850.IedServer_updateFloatAttributeValue(iedServer, fl, message);
         val2 = iec61850.IedServer_updateVisibleStringAttributeValue(iedServer, st, 'This is');
         time.sleep(1);
     
